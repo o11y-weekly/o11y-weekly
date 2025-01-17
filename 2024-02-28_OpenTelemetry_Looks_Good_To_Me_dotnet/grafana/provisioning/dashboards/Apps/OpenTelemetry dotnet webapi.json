@@ -71,6 +71,12 @@
           "color": {
             "mode": "thresholds"
           },
+          "links": [
+            {
+              "title": "view ${__field.labels.http_response_status_code}",
+              "url": "/d/${__dashboard.uid}/${__dashboard}?${prom_ds:queryparam}&${loki_ds:queryparam}&${service_name:queryparam}&${deployment_environment:queryparam}&${service_version:queryparam}&${top:queryparam}&${percentile:queryparam}&${host_name:queryparam}&${http_route:queryparam}&var-http_response_status_code=${__field.labels.http_response_status_code}&${__url_time_range}"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -167,7 +173,7 @@
             "uid": "${prom_ds}"
           },
           "editorMode": "code",
-          "expr": "topk(${top}, \r\n    sum by (http_response_status_code) (rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\", service_version=\"${service_version}\", deployment_environment=\"${deployment_environment}\"}[1m]))\r\n)",
+          "expr": "topk(${top}, \r\n    sum by (http_response_status_code) (rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\", service_version=\"${service_version}\", deployment_environment=\"${deployment_environment}\", host_name=~\"${host_name}\", http_route=~\"${http_route}\", http_response_status_code=~\"${http_response_status_code}\"}[1m]))\r\n)",
           "instant": false,
           "legendFormat": "{{http_response_status_code}}",
           "range": true,
@@ -254,7 +260,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(rate(http_server_request_duration_seconds_bucket{service_name=\"${service_name}\", service_version=\"${service_version}\", deployment_environment=\"${deployment_environment}\"}[$__rate_interval])) by (le)",
+          "expr": "sum(rate(http_server_request_duration_seconds_bucket{service_name=\"${service_name}\", service_version=\"${service_version}\", deployment_environment=\"${deployment_environment}\", host_name=~\"${host_name}\", http_route=~\"${http_route}\", http_response_status_code=~\"${http_response_status_code}\"}[$__rate_interval])) by (le)",
           "format": "heatmap",
           "instant": false,
           "intervalFactor": 1,
@@ -330,7 +336,13 @@
               "mode": "off"
             }
           },
-          "links": [],
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "view ${__field.labels.host_name}${__field.labels.http_route}: ${__field.labels.http_response_status_code}",
+              "url": "/d/${__dashboard.uid}/${__dashboard}?${prom_ds:queryparam}&${loki_ds:queryparam}&${service_name:queryparam}&${deployment_environment:queryparam}&${service_version:queryparam}&${top:queryparam}&${percentile:queryparam}&var-host_name=${__field.labels.host_name}&var-http_route=${__field.labels.http_route}&var-http_response_status_code=${__field.labels.http_response_status_code}&${__url_time_range}"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -429,7 +441,7 @@
             "uid": "${prom_ds}"
           },
           "editorMode": "code",
-          "expr": "topk(${top}, \r\n    sum by (host_name,http_request_method,http_route,url_scheme,http_response_status_code) (rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\", service_version=\"${service_version}\", deployment_environment=\"${deployment_environment}\"}[1m]))\r\n)",
+          "expr": "topk(${top}, \r\n    sum by (host_name,http_request_method,http_route,url_scheme,http_response_status_code) (rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\", service_version=\"${service_version}\", deployment_environment=\"${deployment_environment}\", host_name=~\"${host_name}\", http_route=~\"${http_route}\", http_response_status_code=~\"${http_response_status_code}\"}[1m]))\r\n)",
           "instant": false,
           "legendFormat": "{{http_request_method}} {{url_scheme}}://{{host_name}}{{http_route}}: {{http_response_status_code}}",
           "range": true,
@@ -487,6 +499,11 @@
               "targetBlank": true,
               "title": "${__field.labels.http_response_status_code} Error ${__field.labels.http_request_method} ${__field.labels.http_route} traces",
               "url": "/explore?schemaVersion=1&panes=%7B%22BVT%22:%7B%22datasource%22:%22tempo%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22datasource%22:%7B%22type%22:%22tempo%22,%22uid%22:%22tempo%22%7D,%22queryType%22:%22traceqlSearch%22,%22limit%22:20,%22tableType%22:%22traces%22,%22filters%22:%5B%7B%22id%22:%22service-name%22,%22tag%22:%22service.name%22,%22operator%22:%22%3D%22,%22scope%22:%22resource%22,%22value%22:%5B%22${service_name}%22%5D,%22valueType%22:%22string%22%7D,%7B%22id%22:%22status%22,%22tag%22:%22status%22,%22scope%22:%22intrinsic%22,%22operator%22:%22%3D%22,%22value%22:%5B%5D,%22valueType%22:%22keyword%22%7D,%7B%22id%22:%22span-name%22,%22tag%22:%22name%22,%22operator%22:%22%3D%22,%22scope%22:%22span%22,%22value%22:%5B%22${__field.labels.http_request_method}%20${__field.labels.http_route}%22%5D,%22valueType%22:%22string%22%7D,%7B%22id%22:%223a5a1be8%22,%22operator%22:%22%3D%22,%22scope%22:%22span%22,%22tag%22:%22http.response.status_code%22,%22value%22:%5B%22${__field.labels.http_response_status_code}%22%5D,%22valueType%22:%22int%22%7D%5D%7D%5D,%22range%22:%7B%22from%22:%22${__from}%22,%22to%22:%22${__to}%22%7D%7D%7D&orgId=1"
+            },
+            {
+              "targetBlank": true,
+              "title": "view ${__field.labels.host_name}${__field.labels.http_route}: ${__field.labels.http_response_status_code}",
+              "url": "/d/${__dashboard.uid}/${__dashboard}?${prom_ds:queryparam}&${loki_ds:queryparam}&${service_name:queryparam}&${deployment_environment:queryparam}&${service_version:queryparam}&${top:queryparam}&${percentile:queryparam}&var-host_name=${__field.labels.host_name}&var-http_route=${__field.labels.http_route}&var-http_response_status_code=${__field.labels.http_response_status_code}&${__url_time_range}"
             }
           ],
           "mappings": [],
@@ -558,7 +575,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "topk(${top}, \r\n    sum by(host_name, url_scheme, http_request_method, http_route, http_response_status_code, error_type) (rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\", service_version=\"${service_version}\", deployment_environment=\"${deployment_environment}\", http_response_status_code!~\"[1-3]..\"}[1m]))\r\n)",
+          "expr": "topk(${top}, \r\n    sum by(host_name, url_scheme, http_request_method, http_route, http_response_status_code, error_type) (rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\", service_version=\"${service_version}\", deployment_environment=\"${deployment_environment}\", host_name=~\"${host_name}\", http_route=~\"${http_route}\", http_response_status_code!~\"[1-3]..\", http_response_status_code=~\"${http_response_status_code}\"}[1m]))\r\n)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -618,6 +635,11 @@
               "targetBlank": true,
               "title": "${__field.labels.http_request_method} ${__field.labels.http_route} traces >= ${__value.numeric:text}s",
               "url": "/explore?schemaVersion=1&panes=%7B%22BVT%22:%7B%22datasource%22:%22tempo%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22datasource%22:%7B%22type%22:%22tempo%22,%22uid%22:%22tempo%22%7D,%22queryType%22:%22traceqlSearch%22,%22limit%22:20,%22tableType%22:%22traces%22,%22filters%22:%5B%7B%22id%22:%22service-name%22,%22tag%22:%22service.name%22,%22operator%22:%22%3D%22,%22scope%22:%22resource%22,%22value%22:%5B%22${service_name}%22%5D,%22valueType%22:%22string%22%7D,%7B%22id%22:%22status%22,%22tag%22:%22status%22,%22scope%22:%22intrinsic%22,%22operator%22:%22%3D%22,%22value%22:%5B%5D,%22valueType%22:%22keyword%22%7D,%7B%22id%22:%22span-name%22,%22tag%22:%22name%22,%22operator%22:%22%3D%22,%22scope%22:%22span%22,%22value%22:%5B%22${__field.labels.http_request_method}%20${__field.labels.http_route}%22%5D,%22valueType%22:%22string%22%7D,%7B%22id%22:%223a5a1be8%22,%22operator%22:%22%3D%22,%22scope%22:%22span%22,%22value%22:%5B%5D%7D,%7B%22id%22:%22min-duration%22,%22tag%22:%22duration%22,%22operator%22:%22%3E%3D%22,%22valueType%22:%22duration%22,%22value%22:%22${__value.numeric}s%22%7D%5D%7D%5D,%22range%22:%7B%22from%22:%22${__from}%22,%22to%22:%22${__to}%22%7D%7D%7D&orgId=1"
+            },
+            {
+              "targetBlank": true,
+              "title": "view ${__field.labels.host_name}${__field.labels.http_route}: ${__field.labels.http_response_status_code}",
+              "url": "/d/${__dashboard.uid}/${__dashboard}?${prom_ds:queryparam}&${loki_ds:queryparam}&${service_name:queryparam}&${deployment_environment:queryparam}&${service_version:queryparam}&${top:queryparam}&${percentile:queryparam}&var-host_name=${__field.labels.host_name}&var-http_route=${__field.labels.http_route}&var-http_response_status_code=${__field.labels.http_response_status_code}&${__url_time_range}"
             }
           ],
           "mappings": [],
@@ -720,7 +742,7 @@
             "uid": "${prom_ds}"
           },
           "editorMode": "code",
-          "expr": "topk($top, \r\n    histogram_quantile(${percentile:value}, \r\n        sum(rate(http_server_request_duration_seconds_bucket{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\"}[$__rate_interval])) by (le, http_request_method, url_scheme, host_name, http_route, http_response_status_code)\r\n    )\r\n)",
+          "expr": "topk($top, \r\n    histogram_quantile(${percentile:value}, \r\n        sum(rate(http_server_request_duration_seconds_bucket{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\", host_name=~\"${host_name}\", http_route=~\"${http_route}\", http_response_status_code=~\"${http_response_status_code}\"}[$__rate_interval])) by (le, http_request_method, url_scheme, host_name, http_route, http_response_status_code)\r\n    )\r\n)",
           "instant": false,
           "legendFormat": "{{http_request_method}} {{url_scheme}}://{{host_name}}{{http_route}}: {{http_response_status_code}}",
           "range": true,
@@ -1061,8 +1083,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1165,8 +1186,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1266,7 +1286,7 @@
             {
               "targetBlank": true,
               "title": "${__field.labels.host_name} details",
-              "url": "./d/otel-dotnet-webapi-per-instance/opentelemetry-dotnet-webapi-per-instance?${service_name:queryparam}&${deployment_environment:queryparam}&${service_version:queryparam}&var-host_name=${__field.labels.host_name}&${__url_time_range}"
+              "url": "./d/${__dashboard.uid}/${__dashboard}?${service_name:queryparam}&${deployment_environment:queryparam}&${service_version:queryparam}&var-host_name=${__field.labels.host_name}&${__url_time_range}"
             },
             {
               "targetBlank": true,
@@ -1279,8 +1299,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1445,8 +1464,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1581,8 +1599,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1653,8 +1670,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1769,8 +1785,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1932,8 +1947,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2113,8 +2127,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2294,8 +2307,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2475,8 +2487,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2547,8 +2558,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2617,8 +2627,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2734,8 +2743,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2837,7 +2845,7 @@
             {
               "targetBlank": true,
               "title": "${__field.labels.host_name} details",
-              "url": "./d/otel-dotnet-webapi-per-instance/opentelemetry-dotnet-webapi-per-instance?${service_name:queryparam}&${deployment_environment:queryparam}&${service_version:queryparam}&var-host_name=${__field.labels.host_name}&${__url_time_range}"
+              "url": "./d/${__dashboard.uid}/${__dashboard}?${service_name:queryparam}&${deployment_environment:queryparam}&${service_version:queryparam}&var-host_name=${__field.labels.host_name}&${__url_time_range}"
             },
             {
               "targetBlank": true,
@@ -2850,8 +2858,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3019,7 +3026,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "Mimir",
           "value": "mimir"
         },
@@ -3037,7 +3044,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "Loki",
           "value": "loki"
         },
@@ -3055,9 +3062,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "service",
-          "value": "service"
+          "selected": false,
+          "text": "client",
+          "value": "client"
         },
         "datasource": {
           "type": "prometheus",
@@ -3129,6 +3136,90 @@
         "query": {
           "qryType": 1,
           "query": "label_values(process_runtime_dotnet_gc_duration_nanoseconds_total{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\"},service_version)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prom_ds}"
+        },
+        "definition": "label_values(http_server_request_duration_seconds_count{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\", service_version=\"$service_version\"},host_name)",
+        "hide": 1,
+        "includeAll": true,
+        "multi": false,
+        "name": "host_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(http_server_request_duration_seconds_count{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\", service_version=\"$service_version\"},host_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prom_ds}"
+        },
+        "definition": "label_values(http_server_request_duration_seconds_count{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\", service_version=\"$service_version\", host_name=~\"$host_name\"},http_route)",
+        "hide": 1,
+        "includeAll": true,
+        "multi": false,
+        "name": "http_route",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(http_server_request_duration_seconds_count{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\", service_version=\"$service_version\", host_name=~\"$host_name\"},http_route)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prom_ds}"
+        },
+        "definition": "label_values(http_server_request_duration_seconds_count{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\", service_version=\"$service_version\", host_name=~\"$host_name\", http_route=~\"$http_route\"},http_response_status_code)",
+        "hide": 1,
+        "includeAll": true,
+        "multi": false,
+        "name": "http_response_status_code",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(http_server_request_duration_seconds_count{service_name=\"$service_name\", deployment_environment=\"$deployment_environment\", service_version=\"$service_version\", host_name=~\"$host_name\", http_route=~\"$http_route\"},http_response_status_code)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -3213,6 +3304,6 @@
   "timezone": "",
   "title": "OpenTelemetry dotnet webapi",
   "uid": "otel-dotnet-webapi",
-  "version": 3,
+  "version": 15,
   "weekStart": ""
 }

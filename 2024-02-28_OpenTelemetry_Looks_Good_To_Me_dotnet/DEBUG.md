@@ -38,6 +38,36 @@ dotnet trace report Process1_20240226_091340.nettrace topN -n100 --inclusive
 dotnet trace report Process1_20240226_091340.nettrace topN -n100
 ```
 
+### visualize
+References:
+ - [Flame graphs and more by Hanselman](https://www.hanselman.com/blog/dotnettrace-for-net-core-tracing-in-perfview-speedscope-chromium-event-trace-profiling-flame-graphs-and-more)
+
+#### Perfview
+Reference: [perfview](https://github.com/microsoft/perfview)
+View flame graph by opening the nettrace or collect directly the process by PID
+
+#### Chromium
+- The report can be converted
+```bash
+dotnet trace convert dotnet.exe_20240925_172930.nettrace --format chromium
+```
+- Or simply directly collected with the chromium format:
+```bash
+dotnet trace collect --format chromium
+```
+- Open chrome [chrome://tracing](chrome://tracing)
+
+#### Speedscope
+- The report can be converted
+```bash
+dotnet trace convert dotnet.exe_20240925_172930.nettrace --format speedscope
+```
+- Or simply directly collected with the chromium format:
+```bash
+dotnet trace collect --format speedscope
+```
+- Open Speedscope from any browser [Speedscope.app](https://www.speedscope.app/)
+
 ## dotnet dump
 ### install
 ```bash

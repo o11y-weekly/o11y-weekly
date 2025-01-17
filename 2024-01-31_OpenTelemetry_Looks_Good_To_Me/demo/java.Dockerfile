@@ -2,7 +2,7 @@ ARG JDK_IMAGE
 ARG DISTRO
 ARG OTEL_CONTRIB_COL
 
-FROM ${JDK_IMAGE} as jdk
+FROM ${JDK_IMAGE} AS jdk
 # required for strip-debug to work
 RUN apk add --no-cache binutils
 RUN $JAVA_HOME/bin/jlink \
@@ -14,7 +14,7 @@ RUN $JAVA_HOME/bin/jlink \
          --compress=2 \
          --output /jre-lightweight
 
-FROM ${JDK_IMAGE} as build
+FROM ${JDK_IMAGE} AS build
 WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
@@ -24,7 +24,7 @@ RUN ./mvnw dependency:resolve dependency:go-offline -B
 COPY src ./src
 RUN ./mvnw -o package
 
-FROM otel/opentelemetry-collector-contrib:${OTEL_CONTRIB_COL} as otelcontribcol
+FROM otel/opentelemetry-collector-contrib:${OTEL_CONTRIB_COL} AS otelcontribcol
 FROM ${DISTRO}
 
 RUN apk add --no-cache supervisor

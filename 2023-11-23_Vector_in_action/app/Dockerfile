@@ -1,4 +1,4 @@
-FROM timberio/vector:0.34.0-distroless-static as vector
+FROM timberio/vector:0.34.0-distroless-static AS vector
 
 FROM alpine:3.18.4
 
