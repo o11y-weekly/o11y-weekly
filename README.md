@@ -2,7 +2,7 @@ Welcome to o11y weekly (observability weekly!).
 
 Here is the latest news / feedbacks about observability.
 
-This week, I made the same demo than [the previous post](./2024-01-31_OpenTelemetry_Looks_Good_To_Me/README.md) but for dotnet with OpenTelemetry and Grafana Labs products LGTM (Loki, Grafana, Tempo and Mimir) : [OpenTelemetry Looks Good To Me for dotnet](./2024-02-28_OpenTelemetry_Looks_Good_To_Me_dotnet/README.md). You will discover with a docker compose demo an example of what could be OpenTelemetry and Grafana Labs apply to java applications.
+After [Graphite](./2023-12-07_Meet_Graphite/README.md), this week, let's [Meet Prometheus](./2023-12-14_Meet_Prometheus/README.md) and better understand its trade-offs ?
 
 # Last Post
 [2024-02-28 #10 OpenTelemetry Looks Good To Me for dotnet](./2024-02-28_OpenTelemetry_Looks_Good_To_Me_dotnet/README.md)
